@@ -72,6 +72,23 @@ app.put("/api/product/:id", async (req, res) => {
     }
 })
 
+// delete a product
+
+app.delete("/api/product/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const product = await Product.findByIdAndDelete(id);
+
+        if (!product) {
+            return res.status(404).json({ message: `Product with id ${id} not found` });
+        }
+        res.status(200).json(product);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+})
+
 mongoose.connect('mongodb+srv://ashishsaud498_db_user:wyRUArsqXznQHyKz@backenddb.v6eba3w.mongodb.net/Node-API').then(() => {
     console.log('Connected to MongoDB');
     app.listen(3000, () => {
