@@ -37,7 +37,7 @@ app.get('/api/product/:id', async (req, res) => {
     const { id } = req.params;
 
     // not a 24-character hexadecimal string
-   if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ message: 'Invalid product id format' });
     }
 
@@ -49,6 +49,24 @@ app.get('/api/product/:id', async (req, res) => {
         } else {
             res.status(200).json(product);
         }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+})
+
+// update a product
+
+app.put("/api/product/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const product = await Product.findByIdAndUpdate(id, req.body);
+
+        if (!product) {
+            return res.status(404).json({ message: `Product with id ${id} not found` });
+        }
+        const updatedProduct = await Product.findById(id);
+        res.status(200).json(updatedProduct);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
