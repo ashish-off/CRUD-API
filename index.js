@@ -13,7 +13,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/products', route)
 
 app.get('/', (req, res) => {
-    res.status(200).json({ message: 'Welcome to the node API' });
+    res.status(200).json({
+        message: 'Hi this is Ashish Saud, And welcome to simple CRUD API',
+        api_endpoints: {
+            get_all_products: '/api/products',
+            create_product: '/api/products',
+            get_product_by_id: '/api/products/:id',
+            update_product: '/api/products/:id',
+            delete_product: '/api/products/:id'
+        }
+    });
 });
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
